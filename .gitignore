@@ -1,0 +1,15 @@
+#Intellij files
+.idea/
+
+#generated files
+predictions_lr/
+predictions_nb/
+model/
+
+#sbt files
+target/
+project/
+
+#other
+src/main/resources/model_1
+~/
