@@ -1,8 +1,8 @@
-package com.me.spark.twitter.sparkml
+package com.me.spark.twitter.jobs.sparkml
 
 import com.me.spark.twitter.config.ApplicationConfig
+import com.me.spark.twitter.jobs.sparkml.classifiers.Classifier
 import com.me.spark.twitter.preprocessing.TweetPreprocessorForSentiment140
-import com.me.spark.twitter.sparkml.classifiers.Classifier
 import com.me.spark.twitter.utils.PredictionMetrics
 import org.apache.spark.sql.DataFrame
 

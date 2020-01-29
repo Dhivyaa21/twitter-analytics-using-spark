@@ -1,5 +1,6 @@
-package com.me.spark.twitter.preprocessing
+package com.me.spark.twitter.preprocessing.traits
 
+import com.me.spark.twitter.preprocessing.TextPreprocessingPipeline
 import org.apache.spark.sql.DataFrame
 
 trait TextPreprocessor {
@@ -7,7 +8,7 @@ trait TextPreprocessor {
 
   val trainDf: DataFrame
 
-  def getPreprocessedTweetsForDatasetOne() = {
+  def getPreprocessedTweets() = {
     val pipeline = TextPreprocessingPipeline.createPipeline
     val preprocessedModel = pipeline.fit(trainDf)
     preprocessedModel.write.overwrite().save(modelPath)
