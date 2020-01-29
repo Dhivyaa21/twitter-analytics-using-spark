@@ -1,4 +1,4 @@
-package com.me.spark.twitter.spark.config
+package com.me.spark.twitter.config
 
 import com.typesafe.config.{Config, ConfigFactory}
 import org.apache.log4j.Logger
@@ -18,14 +18,20 @@ object ApplicationConfig {
 
   val applicationConfig: Config = loadConfig()
 
-  val trainingDS = applicationConfig.getString("config.datasets.train")
-  val testDS = applicationConfig.getString("config.datasets.test")
+  val dataSet1 = "ds1"
+  val dataSet2 = "ds2"
+  val dataSet3 = "sentiment140"
+  val trainingDS1 = applicationConfig.getString("config.datasets.one.train")
+  val testDS1 = applicationConfig.getString("config.datasets.one.test")
+  val DS2 = applicationConfig.getString("config.datasets.two.labelledData")
+  val sentiment140Dataset = applicationConfig.getString("config.datasets.three.train")
+  val sentiment140DatasetTest = applicationConfig.getString("config.datasets.three.test")
   val preprocessedModelPath = applicationConfig.getString("config.ml.preprocessed.model.path")
   val nbModelPath = applicationConfig.getString("config.ml.naiveBayes.model.path")
   val lrModelPath = applicationConfig.getString("config.ml.logisticRegression.model.path")
   val predictionsPath = applicationConfig.getString("config.datasets.prediction")
   val nbPredictionsPath = predictionsPath + "_" + applicationConfig.getString("config.ml.naiveBayes.prediction.suffix")
   val lrPredictionsPath = predictionsPath + "_" + applicationConfig.getString("config.ml.logisticRegression.prediction.suffix")
-  val resultDS = applicationConfig.getString("config.datasets.result")
+  val resultDS1 = applicationConfig.getString("config.datasets.one.result")
 
 }
