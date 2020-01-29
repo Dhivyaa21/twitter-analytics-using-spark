@@ -1,4 +1,4 @@
-name := "hate-speech-prediction"
+name := "sentiment-analysis"
 
 version := "0.1"
 
