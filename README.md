@@ -19,7 +19,7 @@ To get the assembly task, add ``plugins.sbt`` file in `project/` folder with the
 
 `addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.6")`
 
-The above plugin will have a assembly task to create the fat jar.
+The above plugin will add an assembly task to create the fat jar.
 
 To run this app, use the following command
 
