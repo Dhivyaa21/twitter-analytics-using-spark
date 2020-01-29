@@ -11,5 +11,7 @@ target/
 project/
 
 #other
-src/main/resources/model_1
+src/main/resources/datasets/
+src/main/resources/model_1/
 ~/
+*.metrics
