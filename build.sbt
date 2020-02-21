@@ -16,8 +16,9 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-mllib" % "3.0.0-preview2",
   "org.apache.spark" %% "spark-streaming" % "2.4.4" % "provided",
   "org.apache.bahir" %% "spark-streaming-twitter" % "2.4.0",
+  "org.apache.spark" %% "spark-sql-kafka-0-10" % "3.0.0-preview2" % "runtime",
 
-  //config factory for configuring spark
+//config factory for configuring spark
   "com.typesafe" % "config" % "1.4.0",
   // https://mvnrepository.com/artifact/log4j/log4j
   "log4j" % "log4j" % "1.2.17",
@@ -25,7 +26,8 @@ libraryDependencies ++= Seq(
   //stanford nlp library
   "edu.stanford.nlp" % "stanford-corenlp" % "3.9.2" artifacts(Artifact("stanford-corenlp", "models"), Artifact("stanford-corenlp")),
   //"com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.10.1",
-  "org.scalatest" %% "scalatest" % "3.1.0" % Test
+  "org.scalatest" %% "scalatest" % "3.1.0" % Test,
+  "org.apache.kafka" %% "kafka" % "2.4.0"
 )
 
 assemblyMergeStrategy in assembly := {
@@ -39,6 +41,7 @@ assemblyMergeStrategy in assembly := {
   case PathList("com", "sun", "istack", xs@_*) => MergeStrategy.last
   case PathList("org", "apache", "hadoop", xs@_*) => MergeStrategy.last
   case PathList("org", "apache", "commons", xs@_*) => MergeStrategy.last
+  case PathList("META-INF", "io.netty.versions.properties") => MergeStrategy.last
   case PathList(ps@_*) if ps.last endsWith "git.properties" => MergeStrategy.last
   case PathList("org", "aopalliance", xs@_*) => MergeStrategy.last
   case x =>
