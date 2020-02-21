@@ -4,7 +4,7 @@ import com.me.spark.twitter.config.ApplicationConfig._
 import com.me.spark.twitter.config.SparkConfig
 import com.me.spark.twitter.utils.PredictionMetrics
 import org.apache.spark.ml.PipelineModel
-import org.apache.spark.ml.classification.{LogisticRegressionModel, NaiveBayesModel}
+import org.apache.spark.ml.classification.LogisticRegressionModel
 import org.apache.spark.sql.DataFrame
 
 /**
@@ -15,6 +15,10 @@ import org.apache.spark.sql.DataFrame
 object HateSpeechRecognitionSentiment140 extends SparkConfig {
 
   val testDf = ImportFromCSV.readSentiment140Csv(sentiment140DatasetTest, ImportFromCSV.sentiment140Schema)
+
+  import org.apache.log4j.{Level, Logger}
+  val rootLogger = Logger.getRootLogger()
+  rootLogger.setLevel(Level.ERROR)
 
   def main(args: Array[String]): Unit = {
     val preprocessingModel = PipelineModel.load(preprocessedModelPath + "/" + dataSet3)
@@ -35,10 +39,10 @@ object HateSpeechRecognitionSentiment140 extends SparkConfig {
     PredictionMetrics.printAllMetrics(lrPredictions, "lr_sentiment140_test.metrics")
   }
 
-  def classifyWithNaiveBayesModel(preprocessedDf: DataFrame) = {
-    val naiveBayesModel = NaiveBayesModel.load(nbModelPath + "/" + dataSet1)
-    naiveBayesModel.transform(preprocessedDf)
-  }
+//  def classifyWithNaiveBayesModel(preprocessedDf: DataFrame) = {
+//    val naiveBayesModel = NaiveBayesModel.load(nbModelPath + "/" + dataSet1)
+//    naiveBayesModel.transform(preprocessedDf)
+//  }
 
   def classifyWithLogisticRegression(preprocessedDf: DataFrame) = {
     val lrModel = LogisticRegressionModel.load(lrModelPath + "/" + dataSet3)
