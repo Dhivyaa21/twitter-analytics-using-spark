@@ -3,7 +3,6 @@ package com.me.spark.twitter.config
 import org.apache.log4j.Logger
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.internal.SQLConf
 
 /**
   * Loads the spark session object required for the application.
