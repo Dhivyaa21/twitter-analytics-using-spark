@@ -34,4 +34,8 @@ object ApplicationConfig {
   val lrPredictionsPath = predictionsPath + "_" + applicationConfig.getString("config.ml.logisticRegression.prediction.suffix")
   val resultDS1 = applicationConfig.getString("config.datasets.one.result")
 
+  val kafkaBootstrapServer =  applicationConfig.getString("config.kafka.bootstrap.servers")
+  val kafkaTopic = applicationConfig.getString("config.kafka.topic")
+  val kafkaStringSerializer = applicationConfig.getString("config.kafka.serializer")
+  val kafkaStringDeserializer = applicationConfig.getString("config.kafka.deserializer")
 }
