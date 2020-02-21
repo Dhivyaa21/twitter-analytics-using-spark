@@ -1,6 +1,7 @@
 package com.me.spark.twitter.streaming
 
 import com.me.spark.twitter.config.ApplicationConfig._
+import com.me.spark.twitter.kafka.KafkaConfig
 import com.me.spark.twitter.utils.StreamingUtils
 import org.apache.spark.ml.PipelineModel
 import org.apache.spark.ml.classification.{LogisticRegressionModel, NaiveBayesModel}
@@ -14,7 +15,7 @@ object TweetStreaming {
     StreamingUtils.setupTwitter()
 
     val sc = new StreamingContext("local[*]", "RealTimeHateSpeechPrediction", Seconds(5))
-    val sparkSession = SparkSession.builder()
+    implicit val sparkSession = SparkSession.builder()
       .appName("RealTimeHateSpeechPrediction")
       .config("spark.sql.warehouse.dir", "file://~/tmp")
       .master("local[*]")
@@ -27,9 +28,11 @@ object TweetStreaming {
     StreamingUtils.setupLogging()
 
     val tweets = TwitterUtils.createStream(sc, None)
-    val englishTweets = tweets.filter(_.getLang.equalsIgnoreCase("en")).map(t => Tweets(t.getId.toInt, t.getText))
+    val englishTweets = tweets
+      .filter(_.getLang.equalsIgnoreCase("en"))
+      .map(t => Tweets(t.getId.toInt, t.getText))
     englishTweets.foreachRDD((rdd, time) => {
-      if (rdd.count() > 0 ) {
+      if (rdd.count() > 0) {
         val sQLContext = sparkSession.sqlContext
         import sQLContext.implicits._
         val filteredTweets = rdd.toDF("id", "tweet")
@@ -38,12 +41,16 @@ object TweetStreaming {
         import org.apache.spark.sql.functions.udf
         def classToString = udf((prediction: Int) => {
           if (prediction == 0) "negative"
-          else if(prediction == 2) "neutral"
+          else if (prediction == 2) "neutral"
           else if (prediction == 4) "positive"
           else "invalid prediction"
         })
 
-        predictions.withColumn("prediction", classToString($"prediction")).select("tweet", "prediction").show(false)
+        //Publish the results to kafka
+        KafkaConfig.publishToKafka(predictions.withColumnRenamed("id", "tweetId"))
+
+        //Subscribe to kafka to post the results to a visualization tool.
+        //KafkaConfig.subscribeToKafka()
       }
       else {
         println("stream empty")
@@ -56,6 +63,7 @@ object TweetStreaming {
   }
 
   case class Tweets(id: Int, tweet: String)
+
   case class TweetsWithLocation(id: Int, tweet: String, latitude: Double, longitude: Double)
 
 }
